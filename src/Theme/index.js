@@ -1,19 +1,51 @@
 import React, { Component } from 'react'
 import {MyMapComponent} from '../custom'
+import * as CafesAPI from '../custom/Cafes'
 import './main.css'
 
-export default (props) => {
+export default class Theme extends React.Component {
+state = {
+		cafeList: [],
+		map: {},
+		lat: 24.7585194,
+		lng: 46.6626282
+}
+componentWillMount(){
 
+}
+
+onLocationChange(lat,lng){
+ this.setState({lat: lat,lng: lng});
+ this.updateCafes();
+}
+
+updateCafes(){
+	CafesAPI.getAll(this.state.lat,this.state.lng).then(res => {this.setState({
+		cafeList:res.response.groups[0].items})
+	}
+)
+}
+componentDidMount(){
+	
+		CafesAPI.getAll(this.state.lat,this.state.lng).then(res => {this.setState({
+			cafeList:res.response.groups[0].items})
+	}
+)
+}
+	render(){
 	return (
 		<div>
 			<section id="sidebar">
 				<div className="inner">
 					<nav>
 						<ul>
-							<li><a href="#intro">Welcome</a></li>
-							<li><a href="#one">Who we are</a></li>
-							<li><a href="#two">What we do</a></li>
-							<li><a href="#three">Get in touch</a></li>
+							{
+								this.state.cafeList.map(cafe => console.log(cafe.venue.name))
+								}
+								
+							{this.state.cafeList.map(cafe => (
+								<li key={cafe.id}><a href="#">{cafe.venue.name}</a></li>
+							))}
 						</ul>
 					</nav>
 				</div>
@@ -22,7 +54,8 @@ export default (props) => {
 			<div id="wrapper">
 				<MyMapComponent 
 					isMarkerShown
-					center={{lat:24.7051736,lng:46.8184831}}
+					onLocationChange={this.onLocationChange.bind(this)}
+					center={{lat:this.state.lat,lng:this.state.lng}}
 					zoom={16}
                     containerElement={<div style={{height:100 + 'vh'}}/>}
                     mapElement={<div style={{height:100 + '%'}}/>}
@@ -39,5 +72,5 @@ export default (props) => {
 			</footer>
 		</div>
 	)
-
+	}
 }

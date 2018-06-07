@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { withGoogleMap, GoogleMap, Marker } from "react-google-maps"
-import {getCafes} from './Cafes';
 const AnyReactComponent = ({ text }) => <div>{ text }</div>;
 
 
@@ -11,19 +10,15 @@ class Map extends Component {
      map: null
    }
  }
-componentDidMount(){
-  this.getCafes();
-}
- getCafes(map){
 
-  }
+ 
  
  mapMoved(map){
-   console.log("Map Moved Bruh to: ", JSON.stringify(this.state.map.getCenter()));
+   this.props.onLocationChange(this.state.map.getCenter().lat(),this.state.map.getCenter().lng());
  }
 
  zoomChanged(map){
-   console.log("Zoom Changed to: ", JSON.stringify(this.state.map.getZoom()))
+   console.log("Zoom Changed to: ", JSON.stringify(this.state.map.getZoom()));
  }
 
  mapLoaded(map){
@@ -42,7 +37,8 @@ componentDidMount(){
   onDragEnd={this.mapMoved.bind(this)}
   onZoomChanged={this.zoomChanged.bind(this)}
     defaultZoom={this.props.zoom}
-    defaultCenter={this.props.center}>
+    defaultCenter={this.props.center}
+  >
     {this.props.isMarkerShown && <Marker position={this.props.center} />}
   </GoogleMap>
 )}
