@@ -40,7 +40,7 @@ componentDidMount(){
 					<nav>
 						<ul>
 							{
-								this.state.cafeList.map(cafe => console.log(cafe.venue.name))
+								this.state.cafeList.map(cafe => console.log(cafe.venue))
 								}
 								
 							{this.state.cafeList.map(cafe => (
@@ -57,8 +57,11 @@ componentDidMount(){
 					onLocationChange={this.onLocationChange.bind(this)}
 					center={{lat:this.state.lat,lng:this.state.lng}}
 					zoom={16}
+					markers={this.state.cafeList}
                     containerElement={<div style={{height:100 + 'vh'}}/>}
-                    mapElement={<div style={{height:100 + '%'}}/>}
+					mapElement={<div style={{height:100 + '%'}}/>
+				    
+				}
 
                 />
 			</div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import InfoBox from 'react-google-maps/lib/components/addons/InfoBox'
 const AnyReactComponent = ({ text }) => <div>{ text }</div>;
 
 
@@ -39,7 +40,18 @@ class Map extends Component {
     defaultZoom={this.props.zoom}
     defaultCenter={this.props.center}
   >
-    {this.props.isMarkerShown && <Marker position={this.props.center} />}
+  {this.props.markers.map(cafe =>(
+    <Marker position={{lat:cafe.venue.location.lat, lng: cafe.venue.location.lng}} >
+    <InfoBox>
+    <div style={{ backgroundColor: `#aaa`, opacity: 0.75, padding: `12px 20px` }}>
+        <div style={{ fontSize: `10px`, color: `#000` }}>
+          <p>{cafe.venue.name}</p>
+          <p>Type: {cafe.venue.categories[0].name}</p>
+        </div>
+      </div>
+    </InfoBox>
+    </Marker>
+  ))}
   </GoogleMap>
 )}
 }
