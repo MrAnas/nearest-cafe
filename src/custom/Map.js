@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
-import { withGoogleMap, GoogleMap, Marker } from "react-google-maps"
-import InfoBox from 'react-google-maps/lib/components/addons/InfoBox'
-const AnyReactComponent = ({ text }) => <div>{ text }</div>;
+import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import Box from './marker'
+
 
 
 class Map extends Component {
  constructor(){
    super();
    this.state = {
-     map: null
+     map: null,
+     activeMarker: null,
+     isOpen: false
    }
  }
 
@@ -22,6 +24,22 @@ class Map extends Component {
    console.log("Zoom Changed to: ", JSON.stringify(this.state.map.getZoom()));
  }
 
+ onToggleOpen(marker){
+  //  console.log(marker.latLng.lat())
+   let clickedMarker = this.props.markers.filter((cafe) => cafe.venue.location.lat == Number(marker.latLng.lat()))
+   if(this.state.isOpen){
+    this.setState(prevState => ({
+      isOpen: !prevState.isOpen,
+      activeMarker: null
+    }));
+   }else{
+    this.setState(prevState => ({
+      isOpen: !prevState.isOpen,
+      activeMarker: clickedMarker
+    }));
+   }
+ }
+
  mapLoaded(map){
   // console.log("Map New Center: ", )
 
@@ -30,6 +48,7 @@ class Map extends Component {
 
   this.setState({map})
  }
+
   render(){
   return(
 
@@ -40,16 +59,11 @@ class Map extends Component {
     defaultZoom={this.props.zoom}
     defaultCenter={this.props.center}
   >
-  {this.props.markers.map(cafe =>(
-    <Marker position={{lat:cafe.venue.location.lat, lng: cafe.venue.location.lng}} >
-    <InfoBox>
-    <div style={{ backgroundColor: `#aaa`, opacity: 0.75, padding: `12px 20px` }}>
-        <div style={{ fontSize: `10px`, color: `#000` }}>
-          <p>{cafe.venue.name}</p>
-          <p>Type: {cafe.venue.categories[0].name}</p>
-        </div>
-      </div>
-    </InfoBox>
+  { this.props.markers.map(cafe =>(
+    <Marker onClick={this.onToggleOpen.bind(this)} key={cafe.venue.id} position={{lat:cafe.venue.location.lat, lng: cafe.venue.location.lng}} >
+    {this.state.activeMarker && this.state.activeMarker[0].venue.id === cafe.venue.id && this.state.isOpen && 
+      <Box cafe={cafe}/>
+    }
     </Marker>
   ))}
   </GoogleMap>

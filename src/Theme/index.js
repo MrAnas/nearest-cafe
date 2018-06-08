@@ -8,12 +8,36 @@ state = {
 		cafeList: [],
 		map: {},
 		lat: 24.7585194,
-		lng: 46.6626282
+		lng: 46.6626282,
+		query: '',
+		queryResult: []
 }
-componentWillMount(){
-
+updateQuery = (query) => {      
+    if(query === ''){
+        this.setState({query: ''});
+    }else { 
+        this.setState({query});
+		this.SearchForLocation(query); 
+	}
 }
 
+SearchForLocation = (query) =>{
+    if(query == null ){
+      this.setState(
+        {queryResult: null}
+    )}
+    else {
+		console.log("Hello")
+      // Complexity of n^2
+	let foundLocation = this.state.cafeList.filter((cafe) => cafe.venue.name.includes(query));
+	console.log(foundLocation)
+	
+	
+    this.setState(
+      {queryResult: foundLocation}
+  )
+}
+}
 onLocationChange(lat,lng){
  this.setState({lat: lat,lng: lng});
  this.updateCafes();
@@ -21,10 +45,12 @@ onLocationChange(lat,lng){
 
 updateCafes(){
 	CafesAPI.getAll(this.state.lat,this.state.lng).then(res => {this.setState({
-		cafeList:res.response.groups[0].items})
+		cafeList:res.response.groups[0].items});
 	}
 )
 }
+
+
 componentDidMount(){
 	
 		CafesAPI.getAll(this.state.lat,this.state.lng).then(res => {this.setState({
@@ -33,18 +59,25 @@ componentDidMount(){
 )
 }
 	render(){
+		let result = this.props.query;
 	return (
 		<div>
 			<section id="sidebar">
 				<div className="inner">
 					<nav>
+					<input type="text" 
+                		   className="" 
+                		   	placeholder="Search by Name" 
+                			value={this.state.query}
+                			onChange={(event) => this.updateQuery(event.target.value)} />
+						
 						<ul>
-							{
-								this.state.cafeList.map(cafe => console.log(cafe.venue))
-								}
+							{this.state.queryResult && this.state.query != '' && this.state.queryResult.map(cafe => (
+								<li key={cafe.venue.id}><a href="#">{cafe.venue.name}</a></li>
+							))}
 								
-							{this.state.cafeList.map(cafe => (
-								<li key={cafe.id}><a href="#">{cafe.venue.name}</a></li>
+							{this.state.query == '' && this.state.cafeList.map(cafe => (
+								<li key={cafe.venue.id}><a href="#">{cafe.venue.name}</a></li>
 							))}
 						</ul>
 					</nav>
