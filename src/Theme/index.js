@@ -66,6 +66,7 @@ componentDidMount(){
 				<div className="inner">
 					<nav>
 					<input type="text" 
+							tabIndex="0"
                 		   className="" 
                 		   	placeholder="Search by Name" 
                 			value={this.state.query}
@@ -73,11 +74,11 @@ componentDidMount(){
 						
 						<ul>
 							{this.state.queryResult && this.state.query != '' && this.state.queryResult.map(cafe => (
-								<li key={cafe.venue.id}><a href="#">{cafe.venue.name}</a></li>
+								<li key={cafe.venue.id}><a tabIndex="0" href="#">{cafe.venue.name}</a></li>
 							))}
 								
 							{this.state.query == '' && this.state.cafeList.map(cafe => (
-								<li key={cafe.venue.id}><a href="#">{cafe.venue.name}</a></li>
+								<li key={cafe.venue.id}><a tabIndex="0" href="#">{cafe.venue.name}</a></li>
 							))}
 						</ul>
 					</nav>
@@ -86,7 +87,9 @@ componentDidMount(){
 
 			<div id="wrapper">
 				<MyMapComponent 
+					googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_Ju6IiWcaEEJEJCsgLhHyZ5cx_Fb-gNY&libraries=places"
 					isMarkerShown
+					loadingElement={<div style={{ height: `100%` }}/>}
 					onLocationChange={this.onLocationChange.bind(this)}
 					center={{lat:this.state.lat,lng:this.state.lng}}
 					zoom={16}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import {withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 import Box from './marker'
 
 
@@ -71,4 +71,4 @@ class Map extends Component {
 }
 
 
-export default withGoogleMap(Map)
+export default withScriptjs(withGoogleMap(Map))
