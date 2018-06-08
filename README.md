@@ -1,3 +1,18 @@
+## About the Project
+In This project you can find the nearest cafeshop around your location by using Google Maps API & Foursquare API.
+
+
+## How To Run The project
+
+From the terminal 
+`npm install`
+`npm start`
+
+and navigate to 
+https://localhost:3000
+
+
+## How the App Was built
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>

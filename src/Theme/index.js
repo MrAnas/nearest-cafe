@@ -67,6 +67,7 @@ componentDidMount(){
 					<nav>
 					<input type="text" 
 							tabIndex="0"
+							aria-label="Search"
                 		   className="" 
                 		   	placeholder="Search by Name" 
                 			value={this.state.query}

@@ -15,7 +15,9 @@ const section = 'section=coffee'
 
 export const getAll = (lat,lng) =>
   fetch(`${api}ll=${lat},${lng}&${clientId}&${clientSecret}&${version}&${section}`)
-    .then(res => {return res.json()})
+    .then(res => {return res.json()}).catch(function(error) {
+      console.log(error);
+    })
 
 // export const getAll = () =>
 //   fetch(`${api}/books`, { headers })

@@ -54,6 +54,7 @@ class Map extends Component {
 
   <GoogleMap
   ref={this.mapLoaded.bind(this)}
+  role="application"
   onDragEnd={this.mapMoved.bind(this)}
   onZoomChanged={this.zoomChanged.bind(this)}
     defaultZoom={this.props.zoom}
